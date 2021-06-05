@@ -7,7 +7,8 @@
 namespace fs = std::filesystem;
 
 std::string* read_files(std::vector<std::string> files, int*);
-
+std::string* get_results(std::string*, int*);
+int match_result(int, int);
 
 
 int main()
@@ -25,10 +26,11 @@ int main()
     }
 
     int n=0;
-    std::string* L = read_files(files, &n);
+    std::string* DATA = read_files(files, &n);
+    std::string* RESULTS = get_results(DATA, &n);
     for (int i = 0; i < n; i++)
     {
-        std::cout << L[i] << std::endl;
+        std::cout << RESULTS[i] << std::endl;
     }
         
 }
@@ -58,3 +60,61 @@ std::string* read_files(std::vector<std::string> files, int* n)
     }
     return DATA;
 }
+
+std::string* get_results(std::string* DATA, int* n)
+{
+    std::string* RESULTS = new std::string[*n];
+    std::string temp1, temp2;
+    int j;
+    int k;
+    int result;
+    for (int i = 0; i < *n; i++)
+    {
+        j = 0;
+        k = 0;
+        result = 0;
+        j = DATA[i].find(',', j);
+        RESULTS[i] += DATA[i].substr(0, j);
+        k = j;
+        DATA[i] += ',';
+        while (DATA[i].find(',',j+1) != -1)
+        {
+            j = DATA[i].find(',', j+1);
+            k++;
+            while (DATA[i][k] != ':')
+            {
+                temp1 += DATA[i][k];
+                k++;
+            }
+            k++;
+            while (k < j)
+            {
+                temp2 += DATA[i][k];
+                k++;
+            }
+            result += match_result(stoi(temp1), stoi(temp2));
+            temp1 = "";
+            temp2 = "";
+        }
+        RESULTS[i] += ',' + std::to_string(result);
+        DATA[i].erase(DATA[i].length() - 1);
+    }
+    return RESULTS;
+}
+
+int match_result(int a, int b)
+{
+    if (a > b)
+    {
+        return 3;
+    }
+    else if (a == b)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
