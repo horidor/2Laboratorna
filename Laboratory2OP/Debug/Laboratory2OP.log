@@ -1,4 +1,4 @@
-﻿  Laboratory2OP.cpp
-C:\Users\topkek\source\repos\Laboratory2OP\2Laboratorna\Laboratory2OP\Laboratory2OP.cpp(48,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\topkek\source\repos\Laboratory2OP\2Laboratorna\Laboratory2OP\Laboratory2OP.cpp(56,23): warning C4018: '<': signed/unsigned mismatch
+﻿  Module.cpp
+C:\Users\topkek\source\repos\Laboratory2OP\2Laboratorna\Laboratory2OP\Module.cpp(16,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\topkek\source\repos\Laboratory2OP\2Laboratorna\Laboratory2OP\Module.cpp(24,23): warning C4018: '<': signed/unsigned mismatch
   Laboratory2OP.vcxproj -> C:\Users\topkek\source\repos\Laboratory2OP\2Laboratorna\Debug\Laboratory2OP.exe
