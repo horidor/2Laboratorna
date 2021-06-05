@@ -4,35 +4,41 @@
 #include <vector>
 #include <filesystem>
 
+std::string output_file = "results.csv";
+
 namespace fs = std::filesystem;
 
+std::vector<std::string> get_info_into_files(std::string, std::string);
 std::string* read_files(std::vector<std::string> files, int*);
 std::string* get_results(std::string*, int*);
 int match_result(int, int);
+void output_results(std::string*, int*, std::string);
 
 
 int main()
 {
-    std::string directory_name = "C:/Users/topkek/source/repos/Laboratory2OP/2Laboratorna/tables";
+    std::string directory_name;
     std::string ext = ".csv";
     std::vector<std::string> files;
-    
-    for (auto& entry : fs::directory_iterator(directory_name))
-    {
-        if (entry.path().extension() == ".csv")
-        {
-            files.push_back(entry.path().generic_string());
-        }
-    }
+    int n = 0;
 
-    int n=0;
+    std::cout << "Input the directory path: "; std::cin >> directory_name;
+    if (!fs::is_directory(directory_name))
+    {
+        std::cout << "Directory does not exist.";
+        return 0;
+    }
+    files = get_info_into_files(directory_name, ext);
+    if (files.empty())
+    {
+        std::cerr << "Directory does not contain .scv files. " << std::endl;
+        return 0;
+    }
+    
     std::string* DATA = read_files(files, &n);
     std::string* RESULTS = get_results(DATA, &n);
-    for (int i = 0; i < n; i++)
-    {
-        std::cout << RESULTS[i] << std::endl;
-    }
-        
+
+    output_results(RESULTS, &n, directory_name);    
 }
 
 std::string* read_files(std::vector<std::string> files, int* n)
@@ -61,7 +67,7 @@ std::string* read_files(std::vector<std::string> files, int* n)
     return DATA;
 }
 
-std::string* get_results(std::string* DATA, int* n)
+std::string* get_results(std::string* DATA, int* n) 
 {
     std::string* RESULTS = new std::string[*n];
     std::string temp1, temp2;
@@ -116,5 +122,27 @@ int match_result(int a, int b)
     {
         return 0;
     }
+}
+
+void output_results(std::string* RESULTS, int* n, std::string directory_name)
+{
+    std::ofstream outf(directory_name+'/'+output_file);
+    for (int i = 0; i < *n; i++)
+    {
+        outf << RESULTS[i] << std::endl;
+    }
+}
+
+std::vector<std::string> get_info_into_files(std::string DIRECTORY, std::string ext)
+{
+    std::vector<std::string> files;
+    for (auto& entry : fs::directory_iterator(DIRECTORY))
+    {
+        if ((entry.path().extension() == ext) and ((entry.path().filename().generic_string()) != output_file ))
+        {
+            files.push_back(entry.path().generic_string());
+        }
+    }
+    return files;
 }
 
